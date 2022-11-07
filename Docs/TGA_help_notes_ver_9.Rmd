@@ -1,0 +1,111 @@
+---
+title: "ThrombinCL"
+output:
+  pdf_document: default
+  word_document: default
+  html_document: default
+---
+# Notes for Analysing Thrombin Generation Curves
+
+```{r, echo=FALSE}
+knitr::opts_chunk$set(echo=FALSE)
+library(tinytex)
+```
+
+A help tab in the app summarises the main features of ThrombinCL version 0.9 and above. Detailed help is presented below.
+
+## Calibrator tab
+
+### Loading data
+
+The app opens with the Calibrator tab and example files of calibrator and sample data are loaded. This is where you load your own data. Excel (xlsx), csv or txt files are accepted and the file type does not have to be specified. If Excel files have more than one sheet, you can specify the sheets containing the calibrator and/or sample data. 
+
+Selection boxes allow the user to specify a range of columns ('start col', 'end col') to use as calibrator or sample data.
+
+All time course data should be formated as a single column of time in column 1 followed by columns of fluorescence data and all columns are assumed to have headings as the first cell. 
+
+### Calibrator fitting
+
+The first task is to fit a curve to the calibrator and correct for the loss of signal due to substrate depletion and inner filter effects. The figure below shows (left) raw data (+) and fitted line (-, magenta), the calculated initial rate of the response (O, red) and the fitted response corrected for loss of signal (O, olive). The panels on the right interrogate the fitting further. The residual plots should be as random as possible; the quintile plot should be linear; and the thrombin plot should be as consistent and noiseless as possible.
+
+One of the selection boxes on the left of the figures allows for the number of points to be selected for fitting. Generally speaking, fewer points improves the fitting, but enough points should be included to cover the change in fluorescence observed in the samples and the time period where interesting data are collected and analysed (beyond the tail). The thrombin response will become noisy over time but this is a natural consequence of the fitting algorithm and taking the first derivative.
+
+When calibrator curves have been fitted satisfactorily, the slope obtained (or an average value from several curves) in entered into the 'Calibrator initial rate' box on the left. Calibrator concentration is entered into the 'Conc of calibrator' box and if all is well this should match the red line on the Thrombin concentration plot shown in the top right panel below  
+
+```{r, out.width = "400px"}
+knitr::include_graphics("./Figures/Nov3Calibratorgraphs.png")
+```
+
+### Sample data
+
+Once the sample data are loaded the raw fluorescence curves are shown on the bottom right hand side of the page. 
+
+Data are selected using the 'start col' and 'end col' boxes to match up with the calibrator selections. The display is organised using the 'plot nrow' box and here it is possible to exclude unwanted late data points using the 'truncate data' box.
+
+The graphs on the right show raw fluorescence or fluorescence after correction for signal loss, which is selected using the radio button labelled 'polynomial' under 'Method for correction', as shown below. The difference between uncorrected (blue line) and corrected (red line) fluorescence is clearly visible.
+
+
+```{r, out.width = "400px"}
+knitr::include_graphics("./Figures/Nov3FluorescenceCorrected.png")
+```
+
+### Plots and curve tabs
+
+The plots and curve tabs show transformed data, that is data first derivative plots of fluorescence data, with or without polynomial correction, as selected.
+
+At the bottom of the left panel, under 'Transformed curves' there are options for what is displayed and analysed. By default, 'lag % for start' is set to 10% meaning a change of 10% in the transformed response signals that the lag period is over. 'Smooth tail' is the number of points selected at the end of the transformed response that gives a stable signal for thrombin-alpha-2-macroglobulin complex only and no more free thrombin is being generated.
+
+The radio buttons under 'Display' determine what curves will be displayed on the 'plots' and 'curves' tabs and what results will be generated:  
+
+*F* = fluorescence 
+
+*Thrombin* = Thrombin concentration calculated from the calibrator concentration and rate entered earlier 
+
+*Smooth*= shows the region of curve smoothing 
+
+*no T-alpha2M* = subtraction the contribution of the thrombin-alpha-2-macroglubulin complex.
+
+
+```{r, out.width = "400px"}
+knitr::include_graphics("./Figures/Nov3TransformedCurves.png")
+```
+
+An example thrombin response showing smoothed tale taken from the 'Curve' tab is shown below. The green line begins after the lag phase and ends at the peak where the blue line contines to the beginning of the tail, shown in red. The gold line is the formation of alpha-2-macroglobulin complex.
+
+Dotted lines indicate time to end of lag phase, time to peak height, peak height and time to tail. All these results are provided in a table underneath the selected curve.
+
+The 'Plots' tab shows all the curves and a selected parameter.  
+
+
+```{r, out.width = "400px"}
+knitr::include_graphics("./Figures/Nov3CurveSelect.png")
+```
+
+## Results
+
+The 'Results' tab collects all the results from all the curves in a table format and can be copied and pasted for further analysis. All the parameters shown can be observed on the thrombin generation curves in the 'Plots' and 'Curve' tab, with the addition of 'Base' which is the time between end of lag and tail and Lag to peak' which is time from the end of the lag phase to the peak thrombin. The area under the curve (AUC) is calculated as the thrombin generated between the lag phase and the start of the tail, i.e. including the area covered by the green and blue lines and the 'Base'.
+
+```{r, out.width = "400px"}
+knitr::include_graphics("./Figures/Nov3ResultsTable.png")
+```
+
+
+## Settings
+
+The settings tab provides a table with useful settings used in the analysis as an aid to record keeping and reproducible analysis. The table can be copied and pasted into other applications.
+
+## Help
+
+The help tab is a summary of this document for handy reference. It also contains a dialog box and drop down menu to change the look of the app if alternative colors or fonts are preferred.
+
+Useful links
+
+R code, data and help files are available from:
+https://github.com/drclongstaff/Thrombin_Generation_Assays/
+
+Summary of other apps available at:
+https://drclongstaff.github.io/shiny-clots/
+
+More information and links may be found at 
+http://www.nibsc.org/science_and_research/biotherapeutics/haemostasis/fibrinolysis.aspx
+
